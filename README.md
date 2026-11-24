@@ -30,14 +30,6 @@ Detalle, decisiones y lista de verificación contra el material de la materia: [
 | 4. Desarrollo | ¿Cómo se organiza el código? | [paquetes](diagramas/exportados/4-desarrollo.png) |
 | 5. Despliegue | ¿Dónde se ejecuta cada artefacto? | [demostración](diagramas/exportados/5a-despliegue-demostracion.png) · [objetivo](diagramas/exportados/5b-despliegue-objetivo.png) |
 
-> Las imágenes llevan marca de agua *evaluation copy* (Visual Paradigm en modo evaluación por línea de comandos). El `.vpp` es el entregable; ver [`diagramas/README.md`](diagramas/README.md).
-
-## Decisiones declaradas
-
-* **Sin autenticación** (fuera de alcance): la API no autentica; la demo "inicia sesión" eligiendo un perfil.
-* **Vistas de contexto y de desarrollo:** el material de la materia no las define formalmente; se usa UML estándar y así se declara.
-* **Supuestos por confirmar con el docente:** una rutina activa por miembro, sesión libre sin rutina, tres tipos de objetivo, usuario de un solo tipo
-  (ver [`docs/01-caso-de-estudio.md`](docs/01-caso-de-estudio.md)).
 
 ## Cómo seguir el trabajo de la materia
 
