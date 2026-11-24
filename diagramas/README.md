@@ -1,7 +1,6 @@
 # Diagramas de GymTrack en Visual Paradigm
 
-`gymtrack.vpp` contiene **7 diagramas** de las 5 vistas pedidas (contexto, funcional, lógica ×2, desarrollo, despliegue ×2).
-Explicación y verificación de cada una: [`../docs/04-vistas-arquitectonicas.md`](../docs/04-vistas-arquitectonicas.md).
+[`../docs/04-vistas-arquitectonicas.md`](../docs/04-vistas-arquitectonicas.md).
 
 | Vista | Imagen |
 |---|---|
