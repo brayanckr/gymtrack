@@ -28,7 +28,7 @@ final class DesarrolloView {
         Sh dto = sub(s, d, backend, "dto", 150, 110);
         Sh model = sub(s, d, backend, "model", 150, 430);
         Sh exception = sub(s, d, backend, "exception", 830, 270);
-        sub(s, d, backend, "config", 830, 430);
+        Sh config = sub(s, d, backend, "config", 830, 430);
 
         s.dep(d, controller, service, null, null);
         s.dep(d, controller, dto, null, null);
@@ -39,6 +39,8 @@ final class DesarrolloView {
         s.dep(d, service, exception, null, null);
         s.dep(d, repository, model, null, null);
         s.dep(d, dto, model, null, null);
+        // DataSeeder (config) carga datos de ejemplo a través de los servicios; nadie depende de config.
+        s.dep(d, config, service, "datos de ejemplo", null);
 
         Sh libBack = s.pkg(d, "Spring Boot: starter-web · starter-data-mongodb · starter-validation", "library",
                 300, 740, 560, 70, Dsl.GRIS);

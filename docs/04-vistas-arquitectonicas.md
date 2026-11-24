@@ -68,6 +68,7 @@ Detalle y justificación de **cada multiplicidad** en `03-modelo-de-dominio.md` 
 * Controller → Service → Repository son **asociaciones** (referencia por inyección); Repository → entidad es **dependencia** (uso de tipos).
 * `EstrategiaProgreso` es una **interfaz** (contrato) con tres realizaciones: `PesoCorporalStrategy`, `FrecuenciaSemanalStrategy`, `FuerzaEjercicioStrategy`.
   Justificación (RN-03/RN-07): tres tipos de objetivo calculan su «valor actual» distinto; `ProgresoService` aplica la misma fórmula y elige por tipo.
+* `ObjetivoController` usa también `ProgresoService` para incluir el progreso en sus respuestas: `ObjetivoService` no puede depender de `ProgresoService` porque este ya depende de aquel (sería un ciclo). Es un ajuste que reveló la implementación.
 * Es un **corte vertical representativo**: las demás áreas siguen el mismo patrón Controller → Service → Repository (ver `05-contrato-api.md`).
 * Los repositorios extienden `MongoRepository`; las entidades se anotan para MongoDB. Composición ⇒ **documento embebido**; asociaciones entre conceptos independientes ⇒ **referencia por id**.
 
@@ -77,6 +78,7 @@ Detalle y justificación de **cada multiplicidad** en `03-modelo-de-dominio.md` 
 
 * Dos repositorios de código: `gymtrack-backend` (Maven, `com.gymtrack.api`) y `gymtrack-frontend` (npm, `src/`). Un tercero (`gymtrack-docs`) no es código.
 * Backend: `controller → service → repository → model`; `controller → dto`; `service → dto, exception`; `dto → model`. **Un solo sentido, sin ciclos**; `model` no depende de ninguna capa.
+* `config` (CORS, reloj y carga de datos de ejemplo) depende de `service` para sembrar datos con las mismas reglas que los reales; nadie depende de `config`.
 * Frontend: `pages → {api, components, state, types}`; `state → types`; `api → types`.
 * Única unión entre repositorios: **en ejecución**, `api (frontend) → controller (backend)` por HTTP/JSON, no en compilación.
 * Dependencias externas agrupadas como «library» (Spring Boot starters; React/Vite/TypeScript).

@@ -47,6 +47,7 @@ Las rutas **nombran recursos**; el método HTTP expresa la operación. Base: `/a
 | `POST /api/miembros/{miembroId}/objetivos` | `{tipo, descripcion, valorInicial, valorMeta, fechaLimite, ejercicioId?}` | 201 `ObjetivoResponse` (con `progreso` 0 %) | 400 (RN-04/05), 404 (miembro/ejercicio) |
 | `GET /api/miembros/{miembroId}/objetivos?estado=ACTIVO` | filtro opcional | 200 lista con `progreso` calculado (RN-07) | 404 |
 | `GET /api/objetivos/{id}` | — | 200 | 404 |
+| `GET /api/objetivos/{id}/progreso` | — | 200 `{valorActual, porcentaje}` (RN-07) | 404 |
 | `PATCH /api/objetivos/{id}/estado` | `{estado: "CUMPLIDO" \| "CANCELADO"}` | 200 | 400, 404, 409 (RN-06) |
 
 `tipo` ∈ `PESO_CORPORAL`, `FRECUENCIA_SEMANAL`, `FUERZA_EJERCICIO`. `progreso` = `{valorActual, porcentaje}`.
@@ -97,7 +98,7 @@ Las rutas **nombran recursos**; el método HTTP expresa la operación. Base: `/a
 
 | Colección | Contenido | Decisión embeber vs. referenciar |
 |---|---|---|
-| `usuarios` | `Miembro` y `Entrenador` con discriminador de tipo | Jerarquía en una colección (patrón del material) |
+| `usuarios` | `Miembro` y `Entrenador`; el tipo lo guarda Spring Data en el campo `_class` (discriminador) | Jerarquía en una colección (patrón del material) |
 | `ejercicios` | `Ejercicio` | — |
 | `objetivos` | `Objetivo` con `miembroId`, `ejercicioId?` | **Referencias**: asociaciones entre conceptos independientes |
 | `rutinas` | `Rutina` con `ejercicios[]` **embebidos** | **Embebido**: composición (el ejercicio prescrito nace y muere con la rutina) |

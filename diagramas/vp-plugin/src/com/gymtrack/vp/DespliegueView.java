@@ -51,7 +51,7 @@ final class DespliegueView {
         s.path(d, nav, jvm, "HTTP/JSON · puerto 8080\n(API REST)");
         s.path(d, jvm, mongo, "Protocolo MongoDB\npuerto 27017");
 
-        s.note(d, "Escenario de demostración (real, el que se ejecuta con docker compose / npm / mvn): todo en el equipo del "
+        s.note(d, "Escenario de demostración (real, el que se ejecuta con MongoDB local, mvnw y npm): todo en el equipo del "
                 + "estudiante. Controller, Service y Repository corren juntos dentro de gymtrack-api.jar.",
                 30, 510, 900, 60);
     }

@@ -159,6 +159,9 @@ final class LogicaView {
         // Colaboración entre capas = asociaciones (referencias por inyección de dependencias).
         s.assoc(d, objCtl, objSvc, null, null, null, true, false);
         s.assoc(d, proCtl, proSvc, null, null, null, true, false);
+        // El controlador de objetivos pide el progreso a ProgresoService para enriquecer sus respuestas
+        // (ObjetivoService no puede depender de ProgresoService: sería un ciclo).
+        s.assoc(d, objCtl, proSvc, null, null, null, true, false);
         s.assoc(d, objSvc, objRepo, null, null, null, true, false);
         s.assoc(d, proSvc, objSvc, null, null, null, true, false);
         s.assoc(d, proSvc, estrategia, "elige por tipo", "1", "1..*", true, false);   // RN-03: tres tipos
