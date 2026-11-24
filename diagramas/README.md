@@ -22,7 +22,10 @@
 * Los errores `Cannot run program "wmic"` de la salida son inofensivos (Windows 11 ya no trae `wmic`).
 
 ### Versión editable en Visual Paradigm Online
-La carpeta [`editables/`](editables/) trae los seis diagramas como archivos `.drawio` (formas nativas, no imágenes), generados por `generar-vistas.js` (1, 2 y 4) y `generar-editables.js` (3, 5a y 5b). Siguen el modelo de presentación del profesor:
+La carpeta [`editables/`](editables/) trae los seis diagramas como archivos `.drawio` (formas nativas, no imágenes), generados por `generar-vistas.js` (1 a 4) y `generar-editables.js` (5a y 5b). Para regenerarlos: `cd diagramas/editables && npm install && npm run generar`.
+La posición de las cajas y el trazado de las flechas lo calcula el motor de layout **ELK** (`elkjs`): flechas ortogonales, etiquetas fuera de las líneas, y se prueban 300 variantes del layout para quedarse con la de menos cruces
+(contexto, lógica y despliegue: 0 cruces; funcional: 3, el mínimo que consigue ELK porque tres componentes dependen a la vez de Usuarios y de Catálogo; desarrollo: 3 — las dependencias servicio→servicio se listan dentro de cada clase como «usa: …» para no saturar el diagrama).
+Siguen el modelo de presentación del profesor:
 * **1 Contexto:** diagrama de contexto (sistema en círculo, entidades externas, flujos de datos etiquetados).
 * **2 Funcional:** **diagrama de componentes** con puertos, interfaces provistas (círculo) y requeridas (socket), y actores; no es de casos de uso.
 * **3 Lógica:** diagrama de clases del dominio (atributos tipados, operaciones, multiplicidades).

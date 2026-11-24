@@ -1,6 +1,6 @@
 // Genera los diagramas editables (.drawio) de GymTrack que se importan en Visual Paradigm Online.
-// Uso: node generar-editables.js   (escribe 3-logica-clases, 5a-... y 5b-... en esta carpeta)
-// Las vistas 1 (contexto), 2 (funcional) y 4 (desarrollo) las genera generar-vistas.js.
+// Uso: node generar-editables.js   (escribe 5a-... y 5b-... en esta carpeta)
+// Las vistas 1 a 4 (contexto, funcional, lógica y desarrollo) las genera generar-vistas.js.
 const fs = require('fs');
 const path = require('path');
 
@@ -75,70 +75,3 @@ const ART = 'shape=note;whiteSpace=wrap;html=1;backgroundOutline=1;darkOpacity=0
   save('5b-despliegue-objetivo.drawio', d, '5b. Despliegue objetivo', 1600, 560);
 })();
 
-// ============ 3. LÓGICA: diagrama de clases ============
-(function logica() {
-  const d = new Doc();
-  d.v('Vista lógica de GymTrack: diagrama de clases', TITLE, 30, 0, 900, 26);
-  const W = 310, LH = 18;
-  const CL = 'swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=0;marginBottom=0;html=1;' + ST.azul;
-  const TXT = 'text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;whiteSpace=wrap;html=1;fontSize=12;';
-  const DIV = 'line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;strokeColor=inherit;';
-  const clase = (nombre, abs, cx, y, attrs, ops) => {
-    const ah = attrs.length * LH + 8, oh = ops.length * LH + 8;
-    const id = d.v(abs ? '«abstract»<br>' + nombre : nombre, CL.replace('fontStyle=1', abs ? 'fontStyle=3' : 'fontStyle=1'), cx - W / 2, y, W, 26 + ah + 8 + oh);
-    d.v(attrs.map(a => a.replace(/:/, ' : ')).join('<br>'), TXT, 0, 26, W, ah, id);
-    d.v('', DIV, 0, 26 + ah, W, 8, id);
-    d.v(ops.map(o => o.replace(/\):/, ') : ')).join('<br>'), TXT, 0, 26 + ah + 8, W, oh, id);
-    return id;
-  };
-  const usuario = clase('Usuario', true, 1010, 40, ['-id:String', '-identificacion:String', '-correo:String', '-nombre:String'],
-    ['+getId():String', '+getIdentificacion():String', '+getCorreo():String', '+setCorreo(correo:String):void', '+getNombre():String', '+setNombre(nombre:String):void']);
-  const miembro = clase('Miembro', false, 500, 320, ['-fechaNacimiento:LocalDate', '-alturaCm:int'],
-    ['+getFechaNacimiento():LocalDate', '+getAlturaCm():int', '+setAlturaCm(alturaCm:int):void']);
-  const entrenador = clase('Entrenador', false, 1520, 320, ['-especialidad:String'], ['+getEspecialidad():String']);
-  const medicion = clase('MedicionCorporal', false, 160, 580, ['-id:String', '-miembroId:String', '-fecha:LocalDate', '-pesoKg:double', '-porcentajeGrasa:Double', '-cinturaCm:Double'],
-    ['+getId():String', '+getMiembroId():String', '+getFecha():LocalDate', '+getPesoKg():double', '+getPorcentajeGrasa():Double', '+getCinturaCm():Double']);
-  const objetivo = clase('Objetivo', false, 500, 580, ['-id:String', '-miembroId:String', '-ejercicioId:String', '-tipo:TipoObjetivo', '-descripcion:String', '-valorInicial:double', '-valorMeta:double', '-fechaInicio:LocalDate', '-fechaLimite:LocalDate', '-estado:EstadoObjetivo'],
-    ['+estaActivo():boolean', '+getId():String', '+getMiembroId():String', '+getEjercicioId():String', '+getTipo():TipoObjetivo', '+getDescripcion():String', '+getValorInicial():double', '+getValorMeta():double', '+getFechaInicio():LocalDate', '+getFechaLimite():LocalDate', '+getEstado():EstadoObjetivo', '+setEstado(estado:EstadoObjetivo):void']);
-  const sesion = clase('SesionEntrenamiento', false, 840, 580, ['-id:String', '-miembroId:String', '-rutinaId:String', '-fecha:LocalDate', '-duracionMinutos:int', '-notas:String', '-series:List<RegistroSerie>'],
-    ['+getId():String', '+getMiembroId():String', '+getRutinaId():String', '+getFecha():LocalDate', '+getDuracionMinutos():int', '+getNotas():String', '+getSeries():List<RegistroSerie>']);
-  const asignacion = clase('AsignacionRutina', false, 1180, 580, ['-id:String', '-miembroId:String', '-entrenadorId:String', '-rutinaId:String', '-fechaInicio:LocalDate', '-fechaFin:LocalDate', '-estado:EstadoAsignacion'],
-    ['+finalizar(hoy:LocalDate):void', '+getId():String', '+getMiembroId():String', '+getEntrenadorId():String', '+getRutinaId():String', '+getFechaInicio():LocalDate', '+getFechaFin():LocalDate', '+getEstado():EstadoAsignacion']);
-  const ejercicio = clase('Ejercicio', false, 500, 1180, ['-id:String', '-nombre:String', '-grupoMuscular:GrupoMuscular', '-descripcion:String'],
-    ['+getId():String', '+getNombre():String', '+getGrupoMuscular():GrupoMuscular', '+getDescripcion():String']);
-  const registro = clase('RegistroSerie', false, 960, 1180, ['-numeroSerie:int', '-ejercicioId:String', '-repeticiones:int', '-pesoKg:double'],
-    ['+getNumeroSerie():int', '+getEjercicioId():String', '+getRepeticiones():int', '+getPesoKg():double']);
-  const rutina = clase('Rutina', false, 1520, 1180, ['-id:String', '-nombre:String', '-descripcion:String', '-nivel:NivelRutina', '-entrenadorId:String', '-ejercicios:List<EjercicioPrescrito>'],
-    ['+getId():String', '+getNombre():String', '+getDescripcion():String', '+getNivel():NivelRutina', '+getEntrenadorId():String', '+getEjercicios():List<EjercicioPrescrito>']);
-  const prescrito = clase('EjercicioPrescrito', false, 1200, 1560, ['-orden:int', '-dia:DiaSemana', '-ejercicioId:String', '-series:int', '-repeticiones:int', '-descansoSegundos:int'],
-    ['+getOrden():int', '+getDia():DiaSemana', '+getEjercicioId():String', '+getSeries():int', '+getRepeticiones():int', '+getDescansoSegundos():int']);
-
-  const OR = 'edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;fontSize=11;labelBackgroundColor=#FFFFFF;';
-  d.e('', OR + 'endArrow=block;endFill=0;', miembro, usuario);
-  d.e('', OR + 'endArrow=block;endFill=0;', entrenador, usuario);
-  // asociaciones: [origen, destino, nombre, mult. origen, mult. destino, composicion]
-  [[miembro, objetivo, 'define', '1', '0..*'], [objetivo, ejercicio, 'se mide en', '0..*', '0..1'], [entrenador, rutina, 'diseña', '1', '0..*'],
-    [rutina, prescrito, 'contiene', '1', '1..*', true], [prescrito, ejercicio, 'corresponde a', '0..*', '1'], [miembro, asignacion, 'recibe', '1', '0..*'],
-    [entrenador, asignacion, 'asigna', '1', '0..*'], [asignacion, rutina, 'corresponde a', '0..*', '1'], [miembro, sesion, 'realiza', '1', '0..*'],
-    [sesion, rutina, 'sigue a', '0..*', '0..1'], [sesion, registro, 'se compone de', '1', '1..*', true], [registro, ejercicio, 'corresponde a', '0..*', '1'],
-    [miembro, medicion, 'registra', '1', '0..*']].forEach(([a, b, n, ma, mb, comp]) => {
-    const e = d.e(n, OR + (comp ? 'startArrow=diamondThin;startFill=1;startSize=14;endArrow=open;endFill=0;' : 'endArrow=open;endFill=0;'), a, b);
-    d.lab(ma, e, -0.85, -12); d.lab(mb, e, 0.85, -12);
-  });
-
-  // Enumeraciones agrupadas (tipos de los atributos)
-  const grp = d.v('Enumeraciones (tipos de los atributos)', 'rounded=0;whiteSpace=wrap;html=1;verticalAlign=top;align=left;spacingLeft=8;fontStyle=1;' + ST.gris, 30, 1960, 1880, 250);
-  const en = (n, x, vals) => {
-    const h = 40 + vals.length * LH + 8;
-    const id = d.v('«enumeration»<br><b>' + n + '</b>', 'swimlane;fontStyle=0;align=center;verticalAlign=top;horizontal=1;startSize=40;html=1;whiteSpace=wrap;fontSize=12;' + ST.verde, x, 40, 230, h, grp);
-    d.v(vals.join('<br>'), TXT, 0, 40, 230, vals.length * LH + 8, id);
-  };
-  en('TipoObjetivo', 30, ['PESO_CORPORAL', 'FRECUENCIA_SEMANAL', 'FUERZA_EJERCICIO']);
-  en('EstadoObjetivo', 300, ['ACTIVO', 'CUMPLIDO', 'CANCELADO']);
-  en('GrupoMuscular', 570, ['PECHO', 'ESPALDA', 'PIERNAS', 'HOMBROS', 'BRAZOS', 'CORE']);
-  en('NivelRutina', 840, ['PRINCIPIANTE', 'INTERMEDIO', 'AVANZADO']);
-  en('DiaSemana', 1110, ['LUNES', 'MARTES', 'MIERCOLES', 'JUEVES', 'VIERNES', 'SABADO', 'DOMINGO']);
-  en('EstadoAsignacion', 1380, ['ACTIVA', 'FINALIZADA']);
-  d.v('Vista lógica: diagrama de clases del modelo con atributos tipados y operaciones (reflejo del paquete model del backend). Rombo relleno = composición (la parte nace y muere con el todo); triángulo hueco = herencia. Las referencias por id (miembroId, ejercicioId...) materializan las asociaciones en MongoDB; composición = documento embebido.', NOTE, 30, 2260, 1100, 70);
-  save('3-logica-clases.drawio', d, '3. Vista lógica - Diagrama de clases', 2000, 2400);
-})();
