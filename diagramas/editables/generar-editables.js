@@ -1,6 +1,6 @@
 // Genera los diagramas editables (.drawio) de GymTrack que se importan en Visual Paradigm Online.
-// Uso: node generar-editables.js   (escribe 1-contexto, 3-logica-clases, 4-desarrollo, 5a-..., 5b-... en esta carpeta)
-// La vista funcional (2) la genera generar-funcional.js.
+// Uso: node generar-editables.js   (escribe 3-logica-clases, 5a-... y 5b-... en esta carpeta)
+// Las vistas 1 (contexto), 2 (funcional) y 4 (desarrollo) las genera generar-vistas.js.
 const fs = require('fs');
 const path = require('path');
 
@@ -36,52 +36,6 @@ const TITLE = 'text;html=1;fontSize=16;fontStyle=1;align=left;';
 const NOTE = 'shape=note;whiteSpace=wrap;html=1;align=left;spacing=8;fontSize=11;' + ST.amarillo;
 const LINE = 'endArrow=none;html=1;rounded=0;fontSize=11;labelBackgroundColor=#FFFFFF;';
 const DEP = 'endArrow=open;endFill=0;dashed=1;html=1;rounded=0;fontSize=11;labelBackgroundColor=#FFFFFF;';
-
-// ============ 1. CONTEXTO: casos de uso (sistema como caja negra) ============
-(function contexto() {
-  const d = new Doc();
-  d.v('Vista de contexto de GymTrack: diagrama de casos de uso', TITLE, 30, 0, 800, 26);
-  const sys = d.v('GymTrack', 'rounded=0;whiteSpace=wrap;html=1;verticalAlign=top;fontStyle=1;fontSize=14;' + ST.gris, 250, 40, 440, 700);
-  const actor = (n, x, y) => d.v(n, 'shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;outlineConnect=0;fontSize=13;', x, y, 40, 80);
-  const miembro = actor('Miembro', 90, 260);
-  const entrenador = actor('Entrenador', 790, 520);
-  const caps = [
-    ['Gestionar objetivos (HU-04, 05, 06)', 1, 0], ['Registrar y consultar entrenamientos (HU-13, 14)', 1, 0],
-    ['Registrar mediciones y ver evolución (HU-15, 16)', 1, 0], ['Ver panel de progreso (HU-17)', 1, 0],
-    ['Gestionar cuenta y perfil (HU-01, 02, 03)', 1, 1], ['Consultar catálogo de ejercicios (HU-07)', 1, 1],
-    ['Consultar rutinas (HU-10, 12)', 1, 1], ['Mantener catálogo de ejercicios (HU-08)', 0, 1],
-    ['Diseñar y asignar rutinas (HU-09, 11)', 0, 1],
-  ];
-  const ucs = caps.map((c, i) => d.v(c[0], 'ellipse;whiteSpace=wrap;html=1;fontSize=12;' + ST.azul, 30, 60 + i * 70, 380, 54, sys));
-  caps.forEach((c, i) => { if (c[1]) d.e('', LINE, miembro, ucs[i]); if (c[2]) d.e('', LINE, entrenador, ucs[i]); });
-  d.v('Vista de contexto. GymTrack se muestra como caja negra: solo lo que cada actor puede hacer con el sistema. Sin autenticación (fuera de alcance, ver docs/01-caso-de-estudio.md).', NOTE, 30, 780, 640, 60);
-  save('1-contexto.drawio', d, '1. Vista de contexto', 1000, 900);
-})();
-
-// ============ 4. DESARROLLO: paquetes ============
-(function desarrollo() {
-  const d = new Doc();
-  d.v('Vista de desarrollo de GymTrack: diagrama de paquetes', TITLE, 30, 0, 800, 26);
-  const PK = 'shape=folder;fontStyle=1;spacingTop=10;tabWidth=50;tabHeight=14;tabPosition=left;html=1;whiteSpace=wrap;fontSize=12;';
-  const fe = d.v('gymtrack-frontend (src)', 'shape=folder;fontStyle=1;spacingTop=10;tabWidth=90;tabHeight=16;tabPosition=left;html=1;verticalAlign=top;align=left;spacingLeft=6;' + ST.verde, 30, 40, 560, 440);
-  const be = d.v('gymtrack-backend (com.gymtrack.api)', 'shape=folder;fontStyle=1;spacingTop=10;tabWidth=120;tabHeight=16;tabPosition=left;html=1;verticalAlign=top;align=left;spacingLeft=6;' + ST.azul, 700, 40, 800, 560);
-  const f = (n, x, y, p, col) => d.v(n, PK + col, x, y, 140, 56, p);
-  const pages = f('pages', 210, 70, fe, ST.verde), api = f('api', 40, 220, fe, ST.verde), state = f('state', 210, 220, fe, ST.verde),
-    comps = f('components', 380, 220, fe, ST.verde), types = f('types', 210, 360, fe, ST.verde);
-  const controller = f('controller', 330, 70, be, ST.azul), config = f('config', 40, 210, be, ST.azul), service = f('service', 330, 210, be, ST.azul),
-    dto = f('dto', 620, 210, be, ST.azul), exception = f('exception', 40, 360, be, ST.azul), repository = f('repository', 330, 360, be, ST.azul),
-    model = f('model', 330, 480, be, ST.azul);
-  const SB = d.v('«library»<br><b>Spring Boot starters</b>', PK + ST.gris, 1000, 660, 240, 70);
-  const RV = d.v('«library»<br><b>React, Vite, TypeScript</b>', PK + ST.gris, 170, 540, 240, 70);
-  const dep = (a, b, l) => d.e(l || '', DEP, a, b);
-  [[pages, api], [pages, comps], [pages, state], [pages, types], [state, types], [api, types]].forEach(([a, b]) => dep(a, b));
-  [[controller, service], [controller, dto], [controller, model], [service, repository], [service, model], [service, dto],
-    [service, exception], [repository, model], [dto, model], [config, service]].forEach(([a, b]) => dep(a, b));
-  dep(api, controller, 'HTTP/JSON (REST), solo en ejecución');
-  dep(be, SB); dep(fe, RV);
-  d.v('Vista de desarrollo. Dos repositorios de código (backend Maven y frontend npm). Dependencias en un solo sentido, sin ciclos: controller → service → repository → model. La única unión entre repositorios es en ejecución (api → controller por HTTP/JSON), no en compilación. config depende de service para sembrar datos con las mismas reglas que los reales.', NOTE, 30, 760, 900, 70);
-  save('4-desarrollo.drawio', d, '4. Vista de desarrollo', 1600, 900);
-})();
 
 // ============ 5a / 5b. DESPLIEGUE ============
 const CUBE = 'shape=cube;whiteSpace=wrap;html=1;boundedLbl=1;backgroundOutline=1;darkOpacity=0.05;darkOpacity2=0.1;size=14;verticalAlign=top;fontSize=12;';

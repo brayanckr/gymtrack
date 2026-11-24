@@ -8,10 +8,10 @@ se verifica contra las reglas de `00-reglas-de-la-materia.md` y se relaciona con
 
 | # | Vista | Diagrama UML | Archivo |
 |---|---|---|---|
-| 1 | Contexto | Casos de uso (sistema como caja negra) | `1-contexto.png` |
+| 1 | Contexto | Diagrama de contexto (sistema, entidades externas y flujos de datos) | `1-contexto.png` |
 | 2 | Funcional | Componentes | `2-funcional.png` |
 | 3 | Lógica | Diagrama de clases (nombre, atributos con tipo y operaciones) | `3-logica-clases.png` |
-| 4 | Desarrollo | Paquetes | `4-desarrollo.png` |
+| 4 | Desarrollo | Clases y dependencias (backend y frontend) | `4-desarrollo.png` |
 | 5 | Despliegue | Despliegue: **5a** demostración local y **5b** escenario objetivo | `5a-…png`, `5b-…png` |
 
 ---
@@ -21,7 +21,7 @@ se verifica contra las reglas de `00-reglas-de-la-materia.md` y se relaciona con
 ![](../diagramas/exportados/1-contexto.png)
 
 * **Decisión:** GymTrack es una caja negra; solo se muestran los dos actores de las historias (**Miembro**, **Entrenador**) y nueve capacidades observables
-  (con sus HU). Se expresa con un diagrama de casos de uso a nivel de épica.
+  (con sus HU). Se expresa como **diagrama de contexto** (modelo de la presentación del profesor): el sistema es un círculo, las dos entidades externas son rectángulos y cada flecha etiquetada es un flujo de datos (con sus HU).
 * **No aparecen** MongoDB ni Spring: son *solución tecnológica*, no contexto del negocio (Bloque 2: «Del dominio» vs. «Solución tecnológica»).
   Entran en las vistas funcional y de despliegue.
 * **Fuera del contexto:** sin autenticación (decisión declarada en `01-caso-de-estudio.md`).
@@ -31,7 +31,7 @@ se verifica contra las reglas de `00-reglas-de-la-materia.md` y se relaciona con
 |---|---|
 | Actores = los de las historias de usuario | ✔ |
 | Sin estructura interna ni tecnología | ✔ |
-| Cada capacidad cita sus HU (17 de 17 cubiertas) | ✔ |
+| Cada flujo de datos cita sus HU (17 de 17 cubiertas) | ✔ |
 
 ## 2. Vista funcional — ¿qué partes funcionales forman la solución?
 
@@ -74,7 +74,7 @@ Un único diagrama con **todas las clases del modelo**; cada una muestra su **no
 * Frontend: `pages → {api, components, state, types}`; `state → types`; `api → types`.
 * Única unión entre repositorios: **en ejecución**, `api (frontend) → controller (backend)` por HTTP/JSON, no en compilación.
 * Dependencias externas agrupadas como «library» (Spring Boot starters; React/Vite/TypeScript).
-* ⚠️ El material no define esta vista formalmente: UML estándar (paquetes y dependencias).
+* Siguiendo el ejemplo del profesor, el diagrama muestra **clases reales con operaciones y dependencias discontinuas** (16 clases de servicio/controlador/estrategia, 9 repositorios, y los módulos del frontend), agrupadas por capa; `model`, `dto`, `exception` y `config` se listan como grupos.
 
 ## 5. Vista de despliegue — ¿dónde se ejecuta cada artefacto?
 

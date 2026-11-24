@@ -22,8 +22,12 @@
 * Los errores `Cannot run program "wmic"` de la salida son inofensivos (Windows 11 ya no trae `wmic`).
 
 ### Versión editable en Visual Paradigm Online
-La carpeta [`editables/`](editables/) trae los seis diagramas como archivos `.drawio` (formas nativas, no imágenes), generados por `generar-funcional.js` y `generar-editables.js`.
-* La **vista funcional (2)** es un **diagrama de componentes** con interfaces (no un diagrama de casos de uso; ese es el de la vista de contexto).
+La carpeta [`editables/`](editables/) trae los seis diagramas como archivos `.drawio` (formas nativas, no imágenes), generados por `generar-vistas.js` (1, 2 y 4) y `generar-editables.js` (3, 5a y 5b). Siguen el modelo de presentación del profesor:
+* **1 Contexto:** diagrama de contexto (sistema en círculo, entidades externas, flujos de datos etiquetados).
+* **2 Funcional:** **diagrama de componentes** con puertos, interfaces provistas (círculo) y requeridas (socket), y actores; no es de casos de uso.
+* **3 Lógica:** diagrama de clases del dominio (atributos tipados, operaciones, multiplicidades).
+* **4 Desarrollo:** clases reales (controladores, servicios, estrategias, repositorios y módulos del frontend) con dependencias discontinuas.
+* **5 Despliegue:** nodos «device»/«executionEnvironment» con artefactos y protocolos.
 * Para editarlos: en Visual Paradigm Online, *Import → draw.io* y elige el archivo; o inserta el XML desde el editor y guarda en tu workspace.
 * Los `.png` y el `.vpp` de arriba siguen siendo la salida del plugin de Visual Paradigm Desktop.
 * VP rechaza dos clases con el mismo nombre en un mismo paquete: por eso cada clase se crea dentro de su paquete antes de nombrarse (el modelo de dominio y el diseño por capas comparten nombres).
