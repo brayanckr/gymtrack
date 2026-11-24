@@ -102,17 +102,23 @@ class UsuarioServiceTest {
 
     @Test
     void requerirEntrenadorConElIdDeUnMiembroEs403() {
-        when(entrenadores.findById("m1")).thenReturn(Optional.empty());
-        when(miembros.existsById("m1")).thenReturn(true);
+        when(usuarios.findById("m1")).thenReturn(Optional.of(unMiembro()));
 
         assertThatThrownBy(() -> servicio.requerirEntrenador("m1", "crear rutinas"))
                 .isInstanceOf(OperacionNoPermitidaException.class).hasMessageContaining("crear rutinas");
     }
 
     @Test
+    void requerirEntrenadorAceptaUnEntrenador() {
+        Entrenador andres = new Entrenador("900001", "Andrés", "a@b.co", "Fuerza");
+        when(usuarios.findById("t1")).thenReturn(Optional.of(andres));
+
+        assertThat(servicio.requerirEntrenador("t1", "crear rutinas")).isSameAs(andres);
+    }
+
+    @Test
     void requerirEntrenadorInexistenteEs404() {
-        when(entrenadores.findById("nadie")).thenReturn(Optional.empty());
-        when(miembros.existsById("nadie")).thenReturn(false);
+        when(usuarios.findById("nadie")).thenReturn(Optional.empty());
 
         assertThatThrownBy(() -> servicio.requerirEntrenador("nadie", "crear rutinas"))
                 .isInstanceOf(RecursoNoEncontradoException.class);
@@ -120,9 +126,31 @@ class UsuarioServiceTest {
 
     @Test
     void requerirMiembroInexistenteEs404() {
-        when(miembros.findById("nadie")).thenReturn(Optional.empty());
+        when(usuarios.findById("nadie")).thenReturn(Optional.empty());
 
         assertThatThrownBy(() -> servicio.requerirMiembro("nadie")).isInstanceOf(RecursoNoEncontradoException.class);
+    }
+
+    @Test
+    void unEntrenadorNoSePuedeUsarComoMiembro() {
+        // Regresión hallada con MongoDB real: el id de un entrenador pasaba por miembro.
+        when(usuarios.findById("t1")).thenReturn(Optional.of(new Entrenador("900001", "Andrés", "a@b.co", "Fuerza")));
+
+        assertThatThrownBy(() -> servicio.requerirMiembro("t1")).isInstanceOf(RecursoNoEncontradoException.class);
+    }
+
+    @Test
+    void laListaDeMiembrosNoIncluyeEntrenadores() {
+        // Regresión hallada con MongoDB real: la colección usuarios mezcla ambos tipos.
+        when(usuarios.findAll()).thenReturn(java.util.List.of(
+                unMiembro(), new Entrenador("900001", "Andrés", "a@b.co", "Fuerza")));
+
+        assertThat(servicio.listarMiembros()).hasSize(1).allMatch(u -> u instanceof Miembro);
+        assertThat(servicio.listarEntrenadores()).hasSize(1).allMatch(u -> u instanceof Entrenador);
+    }
+
+    private static Miembro unMiembro() {
+        return new Miembro("1001", "Camila", "c@b.co", LocalDate.of(1999, 3, 14), 168);
     }
 
     private static MiembroRequest miembro(String id, String correo, LocalDate nacimiento, int altura) {

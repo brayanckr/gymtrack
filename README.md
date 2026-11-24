@@ -48,7 +48,7 @@ JAR ejecutable (el artefacto `gymtrack-api.jar` de la vista de despliegue): `./m
 ## Probar
 
 ```powershell
-./mvnw test        # 53 pruebas, no necesitan MongoDB
+./mvnw test        # 56 pruebas, no necesitan MongoDB
 ```
 
 * **Servicios** con Mockito y reloj fijo: cada regla de negocio (RN-01…RN-17) tiene su caso, incluidos los límites (ej. quien cumple 14 años hoy).
@@ -56,7 +56,12 @@ JAR ejecutable (el artefacto `gymtrack-api.jar` de la vista de despliegue): `./m
 * **Capa web** con `MockMvc`: cada excepción llega con su código HTTP y el cuerpo de error uniforme.
 * **Contexto completo**: arranca todo Spring, lo que valida el grafo de dependencias y los nombres de las consultas derivadas.
 
-> Las pruebas **no** ejercitan MongoDB real (consultas contra una base viva, índices únicos). Para comprobarlo de punta a punta levanta MongoDB (`docker compose up -d`), arranca la API y usa los ejemplos de abajo o el frontend de demostración.
+> Las pruebas **no** ejercitan MongoDB real. Por eso además se probó la API contra MongoDB 9 y contra el frontend, y esa prueba encontró tres errores que los mocks no podían ver (ya corregidos y con prueba de regresión donde es posible):
+> 1. `Between` derivado de Spring Data MongoDB es **exclusivo**: dejaba fuera la sesión del lunes en el objetivo de frecuencia semanal (ahora es una consulta explícita `$gte/$lte`).
+> 2. `findAll` y `findById` de un repositorio de subtipo **no filtran por tipo** en la colección compartida `usuarios`: `/api/miembros` devolvía también a los entrenadores.
+> 3. Consecuencia del anterior: un **miembro podía crear ejercicios** (debía ser 403). Ahora el tipo se comprueba siempre en `UsuarioService`.
+>
+> Para repetirlo: `docker compose up -d` (o MongoDB local), `./mvnw spring-boot:run` y el frontend con `npm run dev`.
 
 ## Ejemplos
 

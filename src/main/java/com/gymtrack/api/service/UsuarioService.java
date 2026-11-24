@@ -91,19 +91,35 @@ public class UsuarioService {
     }
 
     public List<Miembro> listarMiembros() {
-        return miembros.findAll();
+        return todosDeTipo(Miembro.class);
     }
 
     public List<Entrenador> listarEntrenadores() {
-        return entrenadores.findAll();
+        return todosDeTipo(Entrenador.class);
     }
 
     public Miembro obtenerMiembro(String id) {
-        return miembros.findById(id).orElseThrow(() -> RecursoNoEncontradoException.de("un miembro", id));
+        return porId(id, Miembro.class, "un miembro");
     }
 
     public Entrenador obtenerEntrenador(String id) {
-        return entrenadores.findById(id).orElseThrow(() -> RecursoNoEncontradoException.de("un entrenador", id));
+        return porId(id, Entrenador.class, "un entrenador");
+    }
+
+    /**
+     * Busca por id y exige el tipo. Se resuelve SIEMPRE por {@link UsuarioRepository} y se comprueba con
+     * {@code instanceof}: con MongoDB real, {@code findById}/{@code findAll} de un repositorio de subtipo
+     * (MiembroRepository, EntrenadorRepository) <b>no filtran por tipo</b> en la colección compartida
+     * {@code usuarios}, y un entrenador podía pasar por miembro (o al revés). Las pruebas con repositorios
+     * simulados no lo detectaron; apareció al probar contra MongoDB.
+     */
+    private <T extends Usuario> T porId(String id, Class<T> tipo, String recurso) {
+        return usuarios.findById(id).filter(tipo::isInstance).map(tipo::cast)
+                .orElseThrow(() -> RecursoNoEncontradoException.de(recurso, id));
+    }
+
+    private <T extends Usuario> List<T> todosDeTipo(Class<T> tipo) {
+        return usuarios.findAll().stream().filter(tipo::isInstance).map(tipo::cast).toList();
     }
 
     // ------------------------------------------------------------------ validaciones para otros servicios
@@ -120,12 +136,12 @@ public class UsuarioService {
      * @param accion lo que se intenta hacer, para el mensaje ("crear rutinas", "asignar rutinas"...)
      */
     public Entrenador requerirEntrenador(String entrenadorId, String accion) {
-        return entrenadores.findById(entrenadorId).orElseThrow(() -> {
-            if (miembros.existsById(entrenadorId)) {
-                return new OperacionNoPermitidaException("Solo un entrenador puede " + accion);
-            }
-            return RecursoNoEncontradoException.de("un entrenador", entrenadorId);
-        });
+        Usuario usuario = usuarios.findById(entrenadorId)
+                .orElseThrow(() -> RecursoNoEncontradoException.de("un entrenador", entrenadorId));
+        if (usuario instanceof Entrenador entrenador) {
+            return entrenador;
+        }
+        throw new OperacionNoPermitidaException("Solo un entrenador puede " + accion);
     }
 
     /** Nombres de varios usuarios de una vez (id → nombre), para completar respuestas sin consultar uno a uno. */
