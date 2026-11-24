@@ -1,0 +1,21 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: gymtrack-api
+  data:
+    mongodb:
+      # Escenario de demostración: MongoDB local (vista de despliegue 5a). Para MongoDB Atlas basta con
+      # definir MONGODB_URI con la cadena de conexión (escenario 5b); no se versiona ninguna credencial.
+      uri: ${MONGODB_URI:mongodb://localhost:27017/gymtrack}
+      # Crea los índices únicos declarados en las entidades (RN-01 identificación/correo, RN-16 medición por día).
+      auto-index-creation: true
+
+gymtrack:
+  cors:
+    # Orígenes del frontend de demostración (Vite dev: 5173, vite preview: 4173). Separados por comas.
+    allowed-origins: ${GYMTRACK_CORS_ORIGINS:http://localhost:5173,http://localhost:4173}
+  seed:
+    # Carga datos de ejemplo la primera vez (solo si no hay usuarios). Desactivar con GYMTRACK_SEED=false.
+    enabled: ${GYMTRACK_SEED:true}

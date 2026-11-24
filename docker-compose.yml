@@ -1,0 +1,15 @@
+# MongoDB local para el escenario de demostración (vista de despliegue 5a: "MongoDB Server (local)").
+# Es solo una forma cómoda de tener el motor en el puerto 27017; también sirve una instalación nativa.
+# Sin autenticación: pensado únicamente para desarrollo en el propio equipo.
+#   docker compose up -d
+services:
+  mongo:
+    image: mongo:7
+    container_name: gymtrack-mongo
+    ports:
+      - "127.0.0.1:27017:27017"   # solo accesible desde este equipo
+    volumes:
+      - gymtrack-data:/data/db
+
+volumes:
+  gymtrack-data:
