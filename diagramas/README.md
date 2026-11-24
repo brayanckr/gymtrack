@@ -1,7 +1,6 @@
 # Diagramas de GymTrack en Visual Paradigm
 
-`gymtrack.vpp` contiene **6 diagramas** de las 5 vistas pedidas (contexto, funcional, lógica, desarrollo, despliegue ×2).
-Explicación y verificación de cada una: [`../docs/04-vistas-arquitectonicas.md`](../docs/04-vistas-arquitectonicas.md).
+[`../docs/04-vistas-arquitectonicas.md`](../docs/04-vistas-arquitectonicas.md).
 
 | Vista | Imagen |
 |---|---|
@@ -12,27 +11,8 @@ Explicación y verificación de cada una: [`../docs/04-vistas-arquitectonicas.md
 | 5a. Despliegue — demostración | [5a-despliegue-demostracion.png](exportados/5a-despliegue-demostracion.png) |
 | 5b. Despliegue — objetivo | [5b-despliegue-objetivo.png](exportados/5b-despliegue-objetivo.png) |
 
-## ⚠️ Marca de agua en las imágenes
 
-Visual Paradigm arranca en **modo evaluación** cuando se ejecuta por línea de comandos (`getVerifiedLicenseKey: null; state=Evaluating`), por lo que las
-imágenes exportadas llevan la marca *evaluation copy*. **El `.vpp` es el entregable**: ábrelo en Visual Paradigm con tu licencia y exporta limpio
-(*File → Export → Diagram as Image*, o clic derecho en el diagrama).
 
-## Cómo se generaron (sin MCP)
-
-No hace falta ningún MCP ni automatizar la interfaz: Visual Paradigm trae una **Open API en Java** y scripts de línea de comandos.
-
-1. `vp-plugin/` es un **plugin** (clases `Dsl`, `ContextoView`, `FuncionalView`, `LogicaView`, `DesarrolloView`, `DespliegueView`) que construye el modelo UML
-   (elementos reales del repositorio de VP, no dibujos) y los diagramas con la Open API.
-2. `scripts\Plugin.bat -project <vpp> -pluginid com.gymtrack.vp.diagrams` lo ejecuta **sin abrir la interfaz** y guarda el proyecto.
-3. `scripts\ExportDiagramImage.bat` exporta cada diagrama a PNG.
-
-```powershell
-cd diagramas/vp-plugin
-./run.ps1        # compila, genera ../gymtrack.vpp y exporta ../exportados/*.png
-```
-
-Requisitos: Visual Paradigm 18.x (ruta en los scripts), JDK 11+ y Windows PowerShell. Cierra Visual Paradigm antes de ejecutar.
 
 ### Detalles que costaron descubrir
 * `Plugin.bat` exige un `.vpp` existente (`-project`); un archivo vacío no sirve. `run.ps1` usa como *vehículo* un proyecto de ejemplo de la propia instalación de VP
