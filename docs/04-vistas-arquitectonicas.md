@@ -3,8 +3,8 @@
 Cinco vistas construidas en **Visual Paradigm** (`../diagramas/gymtrack.vpp`, 6 diagramas). Cada una responde una pregunta distinta,
 se verifica contra las reglas de `00-reglas-de-la-materia.md` y se relaciona con las demás por trazabilidad (HU → componente → clase → artefacto).
 
-> Las imágenes de `../diagramas/exportados/` llevan la marca de agua *evaluation copy* porque Visual Paradigm corre en modo evaluación
-> desde la línea de comandos. Para imágenes limpias, abre `gymtrack.vpp` con tu licencia y exporta (ver `../diagramas/README.md`).
+> Las imágenes de `../diagramas/exportados/` se exportaron desde **Visual Paradigm Online** (plan gratuito), por eso llevan la marca de agua
+> *Made with Visual Paradigm – for non-commercial use*. Los diagramas son editables en línea (ver `../diagramas/editables/`).
 
 | # | Vista | Diagrama UML | Archivo |
 |---|---|---|---|
