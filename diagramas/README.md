@@ -20,4 +20,10 @@
 * `newProject()` lanza `HeadlessException` en modo comando.
 * Las rutas con caracteres no ASCII (ej. `ñ`) se deforman al pasar por `.bat`: el trabajo intermedio usa `%LOCALAPPDATA%\gymtrack-vp`.
 * Los errores `Cannot run program "wmic"` de la salida son inofensivos (Windows 11 ya no trae `wmic`).
+
+### Versión editable en Visual Paradigm Online
+La carpeta [`editables/`](editables/) trae los seis diagramas como archivos `.drawio` (formas nativas, no imágenes), generados por `generar-funcional.js` y `generar-editables.js`.
+* La **vista funcional (2)** es un **diagrama de componentes** con interfaces (no un diagrama de casos de uso; ese es el de la vista de contexto).
+* Para editarlos: en Visual Paradigm Online, *Import → draw.io* y elige el archivo; o inserta el XML desde el editor y guarda en tu workspace.
+* Los `.png` y el `.vpp` de arriba siguen siendo la salida del plugin de Visual Paradigm Desktop.
 * VP rechaza dos clases con el mismo nombre en un mismo paquete: por eso cada clase se crea dentro de su paquete antes de nombrarse (el modelo de dominio y el diseño por capas comparten nombres).

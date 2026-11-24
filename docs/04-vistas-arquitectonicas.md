@@ -42,6 +42,8 @@ se verifica contra las reglas de `00-reglas-de-la-materia.md` y se relaciona con
   Entrenamientos → Rutinas (rutina opcional de una sesión, RN-14); Mediciones → Usuarios. El grafo es **acíclico**.
 * **Límites del sistema:** SPA → API por *HTTP/JSON (REST)*; API → MongoDB (sistema externo, «persiste documentos»).
 * El recuadro de la API lo deja explícito: **las capas lógicas no son servidores**; todo corre en una JVM.
+* **Es un diagrama de componentes, no de casos de uso.** Cada componente expone una **interfaz** (círculo: `IObjetivos`, `IRutinas`…) y las flechas discontinuas indican que un componente *usa la interfaz* de otro. Los actores y las capacidades del negocio pertenecen a la vista de contexto (casos de uso), no a esta.
+* Versión **editable** (formas nativas) en Visual Paradigm Online: ver `../diagramas/editables/`.
 
 | Verificación | |
 |---|---|
