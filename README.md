@@ -5,9 +5,9 @@ mediciones y progreso). Este repositorio contiene el **análisis y el diseño**:
 
 | Repositorio | Contenido |
 |---|---|
-| **gymtrack-docs** (este) | Historias de usuario, mockups, modelo de dominio, vistas arquitectónicas (`.vpp`) |
-| gymtrack-backend | API REST en Java (Spring Boot + MongoDB), tres capas, comentada |
-| gymtrack-frontend | Demo web (React) que consume la API |
+| **[gymtrack-docs](https://github.com/brayanckr/gymtrack-docs)** (este) | Historias de usuario, mockups, modelo de dominio, vistas arquitectónicas (`.vpp`) |
+| [gymtrack-backend](https://github.com/brayanckr/gymtrack-backend) | API REST en Java (Spring Boot + MongoDB), tres capas, comentada |
+| [gymtrack-frontend](https://github.com/brayanckr/gymtrack-frontend) | Demo web (React) que consume la API |
 
 ## Contenido
 
