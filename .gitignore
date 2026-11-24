@@ -1,0 +1,5 @@
+# Salida intermedia del plugin de Visual Paradigm (se regenera con diagramas/vp-plugin/build.ps1)
+diagramas/vp-plugin/build/
+# Copias de seguridad que genera Visual Paradigm
+*.vbak
+*.bak_*
