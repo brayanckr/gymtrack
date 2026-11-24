@@ -67,7 +67,7 @@ npm run build       # tsc con tipado estricto + build de producción
 
 Además del `build`, se recorrió la interfaz en un navegador en modo demostración: selección de perfil, panel con progreso calculado, validación de formularios con errores junto a cada campo y el flujo de entrenador (asignar una rutina avisando que finaliza la activa).
 
-> No se ha probado de punta a punta contra el backend **con MongoDB real**: el cliente `http.ts` implementa el contrato documentado y está tipado contra él, pero esa integración queda por ejecutar con `docker compose up -d` en el backend.
+También se probó **contra el backend real con MongoDB** (`npm run dev` + API en 8080): los perfiles y el panel cargan desde la base, CORS funciona desde el navegador, un 409 de la API (medición en una fecha ocupada) se muestra en pantalla y una medición válida se guarda y aparece en la gráfica y la tabla.
 
 ## Decisiones
 
