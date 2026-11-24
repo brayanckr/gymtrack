@@ -1,6 +1,6 @@
 # Vistas arquitectónicas de GymTrack
 
-Cinco vistas construidas en **Visual Paradigm** (`../diagramas/gymtrack.vpp`, 7 diagramas). Cada una responde una pregunta distinta,
+Cinco vistas construidas en **Visual Paradigm** (`../diagramas/gymtrack.vpp`, 6 diagramas). Cada una responde una pregunta distinta,
 se verifica contra las reglas de `00-reglas-de-la-materia.md` y se relaciona con las demás por trazabilidad (HU → componente → clase → artefacto).
 
 > Las imágenes de `../diagramas/exportados/` llevan la marca de agua *evaluation copy* porque Visual Paradigm corre en modo evaluación
@@ -10,7 +10,7 @@ se verifica contra las reglas de `00-reglas-de-la-materia.md` y se relaciona con
 |---|---|---|---|
 | 1 | Contexto | Casos de uso (sistema como caja negra) | `1-contexto.png` |
 | 2 | Funcional | Componentes | `2-funcional.png` |
-| 3 | Lógica | Clases: **3a** modelo de dominio y **3b** diseño por capas | `3a-logica-dominio.png`, `3b-logica-capas.png` |
+| 3 | Lógica | Diagrama de clases (nombre, atributos con tipo y operaciones) | `3-logica-clases.png` |
 | 4 | Desarrollo | Paquetes | `4-desarrollo.png` |
 | 5 | Despliegue | Despliegue: **5a** demostración local y **5b** escenario objetivo | `5a-…png`, `5b-…png` |
 
@@ -49,28 +49,18 @@ se verifica contra las reglas de `00-reglas-de-la-materia.md` y se relaciona con
 | Responsabilidades de alto nivel, sin clases ni endpoints | ✔ |
 | Sin ciclos entre componentes | ✔ |
 
-## 3a. Vista lógica — modelo de dominio
+## 3. Vista lógica — diagrama de clases
 
-![](../diagramas/exportados/3a-logica-dominio.png)
+![](../diagramas/exportados/3-logica-clases.png)
 
-Detalle y justificación de **cada multiplicidad** en `03-modelo-de-dominio.md` (columna *Regla*). Resumen de lo aplicado:
+Un único diagrama con **todas las clases del modelo**; cada una muestra su **nombre, sus atributos con tipo de dato y sus operaciones**. Los miembros son los del paquete `model` del backend. La justificación de **cada multiplicidad** está en `03-modelo-de-dominio.md` (columna *Regla*).
 
-* Herencia `Usuario ◁— Miembro/Entrenador` (RN-02) **sin multiplicidades**, triángulo hueco.
-* Composición (rombo relleno): `Rutina ◆— EjercicioPrescrito` (1..\*) y `SesionEntrenamiento ◆— RegistroSerie` (1..\*): la parte nace y muere con el todo.
-* 12 asociaciones **con nombre** que se leen como frase (*Miembro define Objetivo*), flecha de navegabilidad en el sentido de lectura.
-* **Sin métodos, controladores, tablas ni tecnología**; sin agregación (no hay "tiene pero no controla" distinto de una asociación).
-
-## 3b. Vista lógica — diseño por capas (corte Objetivos y Progreso)
-
-![](../diagramas/exportados/3b-logica-capas.png)
-
-* Tres capas como paquetes (**Presentación → Negocio → Datos**) y el **modelo de dominio aparte** (no es una cuarta capa).
-* Controller → Service → Repository son **asociaciones** (referencia por inyección); Repository → entidad es **dependencia** (uso de tipos).
-* `EstrategiaProgreso` es una **interfaz** (contrato) con tres realizaciones: `PesoCorporalStrategy`, `FrecuenciaSemanalStrategy`, `FuerzaEjercicioStrategy`.
-  Justificación (RN-03/RN-07): tres tipos de objetivo calculan su «valor actual» distinto; `ProgresoService` aplica la misma fórmula y elige por tipo.
-* `ObjetivoController` usa también `ProgresoService` para incluir el progreso en sus respuestas: `ObjetivoService` no puede depender de `ProgresoService` porque este ya depende de aquel (sería un ciclo). Es un ajuste que reveló la implementación.
-* Es un **corte vertical representativo**: las demás áreas siguen el mismo patrón Controller → Service → Repository (ver `05-contrato-api.md`).
-* Los repositorios extienden `MongoRepository`; las entidades se anotan para MongoDB. Composición ⇒ **documento embebido**; asociaciones entre conceptos independientes ⇒ **referencia por id**.
+* Herencia `Usuario ◁— Miembro/Entrenador` (RN-02) **sin multiplicidades**, triángulo hueco; `Usuario` es abstracta (cursiva).
+* Composición (rombo relleno): `Rutina ◆— EjercicioPrescrito` (1..\*) y `SesionEntrenamiento ◆— RegistroSerie` (1..\*): la parte nace y muere con el todo (en MongoDB, documento **embebido**).
+* 13 asociaciones **con nombre** que se leen como frase (*Miembro define Objetivo*), con flecha de navegabilidad. Las referencias por id (`miembroId`, `ejercicioId`…) son cómo MongoDB materializa esas asociaciones.
+* Las **enumeraciones** (`TipoObjetivo`, `EstadoObjetivo`, `GrupoMuscular`, `NivelRutina`, `DiaSemana`, `EstadoAsignacion`) se agrupan aparte: son los tipos de los atributos.
+* Las operaciones son las públicas de cada clase: consultas y las pocas con regla (`Objetivo.estaActivo()`, `AsignacionRutina.finalizar(hoy)`). La lógica de negocio vive en los servicios (`Controller → Service → Repository`; ver las vistas funcional y de desarrollo y `gymtrack-backend`).
+* Sin agregación: ningún caso es "tiene pero no controla su existencia" distinto de una asociación.
 
 ## 4. Vista de desarrollo — ¿cómo se organiza el código?
 

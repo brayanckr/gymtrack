@@ -26,7 +26,7 @@ Detalle, decisiones y lista de verificación contra el material de la materia: [
 |---|---|---|
 | 1. Contexto | ¿Quién interactúa con el sistema? | [casos de uso](diagramas/exportados/1-contexto.png) |
 | 2. Funcional | ¿Qué partes funcionales lo forman? | [componentes](diagramas/exportados/2-funcional.png) |
-| 3. Lógica | ¿Qué objetos existen y cómo se relacionan? | [dominio](diagramas/exportados/3a-logica-dominio.png) · [capas](diagramas/exportados/3b-logica-capas.png) |
+| 3. Lógica | ¿Qué objetos existen y cómo se relacionan? | [diagrama de clases](diagramas/exportados/3-logica-clases.png) |
 | 4. Desarrollo | ¿Cómo se organiza el código? | [paquetes](diagramas/exportados/4-desarrollo.png) |
 | 5. Despliegue | ¿Dónde se ejecuta cada artefacto? | [demostración](diagramas/exportados/5a-despliegue-demostracion.png) · [objetivo](diagramas/exportados/5b-despliegue-objetivo.png) |
 

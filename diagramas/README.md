@@ -1,14 +1,13 @@
 # Diagramas de GymTrack en Visual Paradigm
 
-`gymtrack.vpp` contiene **7 diagramas** de las 5 vistas pedidas (contexto, funcional, lógica ×2, desarrollo, despliegue ×2).
+`gymtrack.vpp` contiene **6 diagramas** de las 5 vistas pedidas (contexto, funcional, lógica, desarrollo, despliegue ×2).
 Explicación y verificación de cada una: [`../docs/04-vistas-arquitectonicas.md`](../docs/04-vistas-arquitectonicas.md).
 
 | Vista | Imagen |
 |---|---|
 | 1. Contexto | [1-contexto.png](exportados/1-contexto.png) |
 | 2. Funcional | [2-funcional.png](exportados/2-funcional.png) |
-| 3a. Lógica — dominio | [3a-logica-dominio.png](exportados/3a-logica-dominio.png) |
-| 3b. Lógica — capas | [3b-logica-capas.png](exportados/3b-logica-capas.png) |
+| 3. Lógica — diagrama de clases | [3-logica-clases.png](exportados/3-logica-clases.png) |
 | 4. Desarrollo | [4-desarrollo.png](exportados/4-desarrollo.png) |
 | 5a. Despliegue — demostración | [5a-despliegue-demostracion.png](exportados/5a-despliegue-demostracion.png) |
 | 5b. Despliegue — objetivo | [5b-despliegue-objetivo.png](exportados/5b-despliegue-objetivo.png) |

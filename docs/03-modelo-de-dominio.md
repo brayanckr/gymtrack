@@ -147,7 +147,7 @@ classDiagram
     Miembro "1" --> "0..*" MedicionCorporal : registra
 ```
 
-> Versión formal en Visual Paradigm: vista lógica, diagrama *Modelo de dominio* (`diagramas/`).
+> Versión formal en Visual Paradigm: vista lógica, diagrama de clases (`diagramas/exportados/3-logica-clases.png`). Ese diagrama añade tipos de dato y operaciones a este mismo modelo; este documento conserva la versión conceptual (solo atributos, sin métodos), que es la que pide el Bloque 3.
 
 ## 5. Verificación (checklist del Bloque 3)
 

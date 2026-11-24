@@ -57,7 +57,7 @@ public class GymTrackPlugin implements VPPlugin, VPPluginCommandLineSupport {
             FuncionalView.build(s);
             System.out.println("[GymTrack] 2. vista funcional creada");
             LogicaView.build(s);
-            System.out.println("[GymTrack] 3. vista logica creada (dominio + capas)");
+            System.out.println("[GymTrack] 3. vista logica creada (diagrama de clases)");
             DesarrolloView.build(s);
             System.out.println("[GymTrack] 4. vista de desarrollo creada");
             DespliegueView.build(s);

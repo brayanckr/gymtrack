@@ -1,7 +1,6 @@
 1-contexto|1. Vista de contexto
 2-funcional|2. Vista funcional
-3a-logica-dominio|3a. Vista lógica - Modelo de dominio
-3b-logica-capas|3b. Vista lógica - Diseño por capas (corte Objetivos y Progreso)
+3-logica-clases|3. Vista lógica - Diagrama de clases
 4-desarrollo|4. Vista de desarrollo
 5a-despliegue-demostracion|5a. Vista de despliegue - Escenario de demostración (local)
 5b-despliegue-objetivo|5b. Vista de despliegue - Escenario objetivo (hipotético)
