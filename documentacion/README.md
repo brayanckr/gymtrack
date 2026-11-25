@@ -11,7 +11,7 @@ El código está en [`../backend`](../backend/README.md) y [`../frontend`](../fr
 | [`historias-de-usuario/`](historias-de-usuario/README.md) | 17 historias en 6 épicas, criterios Dado/Cuando/Entonces, prioridad y estimación |
 | [`mockups/`](mockups/README.md) | 11 pantallas (HTML + PNG) con estados de error y vacíos |
 | [`docs/`](docs/) | Reglas de la materia, caso de estudio, reglas de negocio, modelo de dominio, vistas, contrato de API |
-| [`diagramas/`](diagramas/README.md) | Imágenes (`exportados/`), versiones editables (`editables/`, `.drawio`) y el `gymtrack.vpp` de una versión anterior |
+| [`diagramas/`](diagramas/README.md) | Imágenes (`exportados/`) y versiones editables (`editables/`, `.drawio`) |
 
 ## Las cinco vistas (Visual Paradigm)
 

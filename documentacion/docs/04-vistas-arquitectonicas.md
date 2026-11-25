@@ -1,6 +1,6 @@
 # Vistas arquitectónicas de GymTrack
 
-Cinco vistas construidas en **Visual Paradigm** (`../diagramas/gymtrack.vpp`, 6 diagramas). Cada una responde una pregunta distinta,
+Cinco vistas construidas en **Visual Paradigm** (6 diagramas). Cada una responde una pregunta distinta,
 se verifica contra las reglas de `00-reglas-de-la-materia.md` y se relaciona con las demás por trazabilidad (HU → componente → clase → artefacto).
 
 > Las imágenes de `../diagramas/exportados/` se exportaron desde **Visual Paradigm Online** (plan gratuito), por eso llevan la marca de agua

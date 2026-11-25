@@ -14,13 +14,6 @@
 
 
 
-### Detalles que costaron descubrir
-* `Plugin.bat` exige un `.vpp` existente (`-project`); un archivo vacío no sirve. `run.ps1` usa como *vehículo* un proyecto de ejemplo de la propia instalación de VP
-  (0 diagramas/clases) y verifica con conteos que el resultado contenga solo GymTrack.
-* `newProject()` lanza `HeadlessException` en modo comando.
-* Las rutas con caracteres no ASCII (ej. `ñ`) se deforman al pasar por `.bat`: el trabajo intermedio usa `%LOCALAPPDATA%\gymtrack-vp`.
-* Los errores `Cannot run program "wmic"` de la salida son inofensivos (Windows 11 ya no trae `wmic`).
-
 ### Versión editable en Visual Paradigm Online
 La carpeta [`editables/`](editables/) trae los seis diagramas como archivos `.drawio` (formas nativas, no imágenes), generados por `generar-vistas.js` (1 a 4) y `generar-editables.js` (5a y 5b). Para regenerarlos: `cd diagramas/editables && npm install && npm run generar`.
 La posición de las cajas y el trazado de las flechas lo calcula el motor de layout **ELK** (`elkjs`): flechas ortogonales, etiquetas fuera de las líneas, y se prueban 300 variantes del layout para quedarse con la de menos cruces
@@ -32,5 +25,4 @@ Siguen el modelo de presentación del profesor:
 * **4 Desarrollo:** clases reales (controladores, servicios, estrategias, repositorios y módulos del frontend) con dependencias discontinuas.
 * **5 Despliegue:** nodos «device»/«executionEnvironment» con artefactos y protocolos.
 * Para editarlos: en Visual Paradigm Online, *Import → draw.io* y elige el archivo; o inserta el XML desde el editor y guarda en tu workspace.
-* Los `.png` y el `.vpp` de arriba siguen siendo la salida del plugin de Visual Paradigm Desktop.
-* VP rechaza dos clases con el mismo nombre en un mismo paquete: por eso cada clase se crea dentro de su paquete antes de nombrarse (el modelo de dominio y el diseño por capas comparten nombres).
+* Las imágenes de `exportados/` se exportaron desde Visual Paradigm Online.
