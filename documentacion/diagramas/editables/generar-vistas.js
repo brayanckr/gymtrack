@@ -98,27 +98,30 @@ const bounds = map => { let w = 0, h = 0; for (const k in map) { w = Math.max(w,
 // ======================================================================
 // 1. CONTEXTO (modelo del profesor: círculo central, entidades externas, flujos de datos)
 // ======================================================================
+// Estilo clásico y sobrio: formas blancas de borde oscuro, dos flechas rectas por entidad y una etiqueta corta junto a cada una.
+// Sin título ni notas: las decisiones y la trazabilidad con las historias están en docs/04-vistas-arquitectonicas.md.
 function contexto() {
   const d = new Doc();
-  d.v('Vista de contexto de GymTrack: diagrama de contexto (flujos de datos)', TITLE, 30, 0, 900, 26);
-  const miembro = d.v('<b>Miembro</b><br>(entidad externa)', 'rounded=0;whiteSpace=wrap;html=1;fontSize=14;' + ST.verde, 30, 220, 210, 150);
-  const entrenador = d.v('<b>Entrenador</b><br>(entidad externa)', 'rounded=0;whiteSpace=wrap;html=1;fontSize=14;' + ST.verde, 1240, 220, 210, 150);
-  const sistema = d.v('<b>GymTrack</b><br>(sistema de seguimiento<br>de entrenamiento)', 'ellipse;whiteSpace=wrap;html=1;fontSize=15;' + ST.azul, 570, 130, 340, 340);
-  const FL = 'endArrow=classic;html=1;edgeStyle=none;exitPerimeter=0;entryPerimeter=0;';
-  const L1 = 'entryX=0.047;entryY=0.289;', L2 = 'exitX=0.047;exitY=0.711;', R1 = 'entryX=0.953;entryY=0.289;', R2 = 'exitX=0.953;exitY=0.711;';
-  // flechas limpias (sin texto encima) y etiquetas separadas, colocadas fuera de la línea
-  d.e('', FL + 'exitX=1;exitY=0.3;' + L1, miembro, sistema);
-  d.e('', FL + L2 + 'entryX=1;entryY=0.75;', sistema, miembro);
-  d.e('', FL + 'exitX=0;exitY=0.3;' + R1, entrenador, sistema);
-  d.e('', FL + R2 + 'entryX=0;entryY=0.75;', sistema, entrenador);
-  const T = 'text;html=1;fontSize=11;align=center;verticalAlign=middle;whiteSpace=wrap;';
-  d.v('Datos de cuenta y perfil (HU-01, 03)<br>Objetivos (HU-04)<br>Sesiones de entrenamiento (HU-13)<br>Mediciones corporales (HU-15)', T, 250, 132, 300, 72);
-  d.v('Panel de progreso (HU-17)<br>Progreso de objetivos (HU-05, 06)<br>Historial de sesiones (HU-14)<br>Evolución corporal (HU-16)<br>Catálogo y rutina activa (HU-07, 10, 12)', T, 250, 396, 300, 90);
-  d.v('Datos de cuenta (HU-02)<br>Ejercicios nuevos (HU-08)<br>Rutinas diseñadas (HU-09)<br>Asignaciones de rutina (HU-11)', T, 930, 132, 300, 72);
-  d.v('Catálogo de ejercicios (HU-07)<br>Rutinas existentes (HU-10)<br>Miembros registrados (HU-11)<br>Confirmaciones y errores de validación', T, 930, 396, 300, 72);
-  d.v('Vista de contexto (Bloque 2). GymTrack es una caja negra: solo se muestran las dos entidades externas de las historias de usuario (Miembro y Entrenador) y los datos que intercambian con el sistema. '
-    + 'MongoDB, Spring y React no aparecen: son solución tecnológica y se ven en las vistas funcional, de desarrollo y de despliegue. Sin autenticación (fuera de alcance).', NOTE, 30, 540, 1000, 70);
-  save('1-contexto.drawio', d, '1. Vista de contexto', 1500, 660);
+  const BASE = 'whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#333333;strokeWidth=2;fontColor=#333333;fontSize=16;';
+  const BOX = 'rounded=1;arcSize=8;' + BASE;
+  const miembro = d.v('Miembro', BOX, 40, 130, 220, 80);
+  const entrenador = d.v('Entrenador', BOX, 1040, 130, 220, 80);
+  const sistema = d.v('GymTrack', 'ellipse;' + BASE, 540, 60, 220, 220);
+  const FL = 'endArrow=open;endSize=9;html=1;rounded=0;edgeStyle=none;strokeColor=#333333;strokeWidth=1.5;exitPerimeter=0;entryPerimeter=0;';
+  // puntos de anclaje: las dos flechas de cada lado quedan horizontales y paralelas (y = 145 e y = 195)
+  const arriba = 0.1875, abajo = 0.8125;
+  const cIzq = x => `${x}X=0.0132;${x}Y=0.3864;`, cIzqB = x => `${x}X=0.0132;${x}Y=0.6136;`;
+  const cDer = x => `${x}X=0.9868;${x}Y=0.3864;`, cDerB = x => `${x}X=0.9868;${x}Y=0.6136;`;
+  d.e('', FL + `exitX=1;exitY=${arriba};` + cIzq('entry'), miembro, sistema);
+  d.e('', FL + cIzqB('exit') + `entryX=1;entryY=${abajo};`, sistema, miembro);
+  d.e('', FL + cDer('exit') + `entryX=0;entryY=${arriba};`, sistema, entrenador);
+  d.e('', FL + `exitX=0;exitY=${abajo};` + cDerB('entry'), entrenador, sistema);
+  const T = 'text;html=1;fontSize=14;fontColor=#333333;align=center;whiteSpace=wrap;';
+  d.v('Registro, perfil, objetivos,<br>sesiones y mediciones', T + 'verticalAlign=bottom;', 270, 95, 260, 44);
+  d.v('Rutina activa, historial<br>y progreso', T + 'verticalAlign=top;', 270, 201, 260, 44);
+  d.v('Catálogo, rutinas<br>y miembros', T + 'verticalAlign=bottom;', 770, 95, 260, 44);
+  d.v('Registro, ejercicios,<br>rutinas y asignaciones', T + 'verticalAlign=top;', 770, 201, 260, 44);
+  save('1-contexto.drawio', d, '1. Vista de contexto', 1300, 340);
 }
 
 // ======================================================================

@@ -20,8 +20,16 @@ se verifica contra las reglas de `00-reglas-de-la-materia.md` y se relaciona con
 
 ![](../diagramas/exportados/1-contexto.png)
 
-* **Decisión:** GymTrack es una caja negra; solo se muestran los dos actores de las historias (**Miembro**, **Entrenador**) y nueve capacidades observables
-  (con sus HU). Se expresa como **diagrama de contexto** (modelo de la presentación del profesor): el sistema es un círculo, las dos entidades externas son rectángulos y cada flecha etiquetada es un flujo de datos (con sus HU).
+* **Decisión:** GymTrack es una caja negra; solo se muestran los dos actores de las historias (**Miembro**, **Entrenador**).
+  Se expresa como **diagrama de contexto** (modelo de la presentación del profesor): el sistema es un círculo, las dos entidades externas son rectángulos y cada flecha etiquetada es un flujo de datos. Las etiquetas son cortas; su detalle e historias de usuario son:
+
+| Flujo de datos | Qué incluye (historias de usuario) |
+|---|---|
+| Miembro → GymTrack: *registro, perfil, objetivos, sesiones y mediciones* | Cuenta y perfil (HU-01, 03), objetivos (HU-04, 06), sesiones (HU-13), mediciones (HU-15) |
+| GymTrack → Miembro: *rutina activa, historial y progreso* | Catálogo y rutinas (HU-07, 10), rutina activa (HU-12), historial (HU-14), progreso de objetivos (HU-05), evolución corporal (HU-16), panel (HU-17) |
+| Entrenador → GymTrack: *registro, ejercicios, rutinas y asignaciones* | Cuenta (HU-02), ejercicios (HU-08), rutinas (HU-09), asignaciones (HU-11) |
+| GymTrack → Entrenador: *catálogo, rutinas y miembros* | Catálogo (HU-07), rutinas existentes (HU-10), miembros para asignar (HU-11) |
+
 * **No aparecen** MongoDB ni Spring: son *solución tecnológica*, no contexto del negocio (Bloque 2: «Del dominio» vs. «Solución tecnológica»).
   Entran en las vistas funcional y de despliegue.
 * **Fuera del contexto:** sin autenticación (decisión declarada en `01-caso-de-estudio.md`).
@@ -31,7 +39,7 @@ se verifica contra las reglas de `00-reglas-de-la-materia.md` y se relaciona con
 |---|---|
 | Actores = los de las historias de usuario | ✔ |
 | Sin estructura interna ni tecnología | ✔ |
-| Cada flujo de datos cita sus HU (17 de 17 cubiertas) | ✔ |
+| Cada flujo de datos tiene sus HU en la tabla (17 de 17 cubiertas) | ✔ |
 
 ## 2. Vista funcional — ¿qué partes funcionales forman la solución?
 
