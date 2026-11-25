@@ -26,4 +26,4 @@ node build.mjs     # genera html/ y assets/wireframe.css
 ./render.ps1       # exporta png/
 ```
 
-El frontend de demo (`gymtrack-frontend`) implementa estas mismas pantallas.
+El frontend de demo ([`frontend/`](../../frontend/README.md)) implementa estas mismas pantallas.

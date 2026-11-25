@@ -61,18 +61,18 @@ Un único diagrama con **todas las clases del modelo**; cada una muestra su **no
 * Composición (rombo relleno): `Rutina ◆— EjercicioPrescrito` (1..\*) y `SesionEntrenamiento ◆— RegistroSerie` (1..\*): la parte nace y muere con el todo (en MongoDB, documento **embebido**).
 * 13 asociaciones **con nombre** que se leen como frase (*Miembro define Objetivo*), con flecha de navegabilidad. Las referencias por id (`miembroId`, `ejercicioId`…) son cómo MongoDB materializa esas asociaciones.
 * Las **enumeraciones** (`TipoObjetivo`, `EstadoObjetivo`, `GrupoMuscular`, `NivelRutina`, `DiaSemana`, `EstadoAsignacion`) se agrupan aparte: son los tipos de los atributos.
-* Las operaciones son las públicas de cada clase: consultas y las pocas con regla (`Objetivo.estaActivo()`, `AsignacionRutina.finalizar(hoy)`). La lógica de negocio vive en los servicios (`Controller → Service → Repository`; ver las vistas funcional y de desarrollo y `gymtrack-backend`).
+* Las operaciones son las públicas de cada clase: consultas y las pocas con regla (`Objetivo.estaActivo()`, `AsignacionRutina.finalizar(hoy)`). La lógica de negocio vive en los servicios (`Controller → Service → Repository`; ver las vistas funcional y de desarrollo y [`backend/`](../../backend/README.md)).
 * Sin agregación: ningún caso es "tiene pero no controla su existencia" distinto de una asociación.
 
 ## 4. Vista de desarrollo — ¿cómo se organiza el código?
 
 ![](../diagramas/exportados/4-desarrollo.png)
 
-* Dos repositorios de código: `gymtrack-backend` (Maven, `com.gymtrack.api`) y `gymtrack-frontend` (npm, `src/`). Un tercero (`gymtrack-docs`) no es código.
+* Un solo repositorio con dos módulos de código: `backend/` (Maven, `com.gymtrack.api`) y `frontend/` (npm, `src/`). Las carpetas `documentacion/` y `pruebas-api/` no son código de la aplicación.
 * Backend: `controller → service → repository → model`; `controller → dto`; `service → dto, exception`; `dto → model`. **Un solo sentido, sin ciclos**; `model` no depende de ninguna capa.
 * `config` (CORS, reloj y carga de datos de ejemplo) depende de `service` para sembrar datos con las mismas reglas que los reales; nadie depende de `config`.
 * Frontend: `pages → {api, components, state, types}`; `state → types`; `api → types`.
-* Única unión entre repositorios: **en ejecución**, `api (frontend) → controller (backend)` por HTTP/JSON, no en compilación.
+* Única unión entre los dos módulos: **en ejecución**, `api (frontend) → controller (backend)` por HTTP/JSON, no en compilación.
 * Dependencias externas agrupadas como «library» (Spring Boot starters; React/Vite/TypeScript).
 * Siguiendo el ejemplo del profesor, el diagrama muestra **clases reales con operaciones y dependencias discontinuas** (16 clases de servicio/controlador/estrategia, 9 repositorios, y los módulos del frontend), agrupadas por capa; `model`, `dto`, `exception` y `config` se listan como grupos.
 

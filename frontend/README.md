@@ -1,6 +1,6 @@
 # GymTrack — demo web (frontend)
 
-Aplicación de una sola página (**React + Vite + TypeScript**) que implementa las 11 pantallas de los mockups de **gymtrack-docs** y consume la API REST de **gymtrack-backend**.
+Aplicación de una sola página (**React + Vite + TypeScript**) que implementa las 11 pantallas de [los mockups](../documentacion/mockups/README.md) y consume la API REST de [`../backend`](../backend/README.md).
 Es la demostración del proyecto de *Diseño de Software*; no es una app de producción (sin autenticación, ver "Decisiones").
 
 ## Ejecutar
@@ -17,7 +17,7 @@ npm install
 npm run demo          # http://localhost:5173
 ```
 
-**B. Con el backend real** (la API en `http://localhost:8080` con MongoDB; ver `gymtrack-backend`):
+**B. Con el backend real** (la API en `http://localhost:8080` con MongoDB; ver [`../backend`](../backend/README.md)):
 
 ```powershell
 npm run dev           # http://localhost:5173

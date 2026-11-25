@@ -2,7 +2,7 @@
 
 API en **Java + Spring Boot + MongoDB** para el seguimiento del entrenamiento en el gimnasio: objetivos con progreso calculado, catálogo de ejercicios, rutinas y su asignación,
 sesiones de entrenamiento, mediciones corporales y panel de progreso. Parte de un proyecto de *Diseño de Software*; el análisis y el diseño están en
-**gymtrack-docs** (historias de usuario, modelo de dominio, las cinco vistas en Visual Paradigm y el contrato de la API).
+[`../documentacion`](../documentacion/README.md) (historias de usuario, modelo de dominio, las cinco vistas en Visual Paradigm y el contrato de la API).
 
 ## Arquitectura (tres capas, como en la materia)
 
@@ -75,7 +75,7 @@ curl -X POST http://localhost:8080/api/miembros/<id>/mediciones -H "Content-Type
   -d '{\"fecha\":\"2026-11-23\",\"pesoKg\":78.0}'
 ```
 
-Contrato completo (rutas, entradas, códigos y trazabilidad HU → endpoint): `gymtrack-docs/docs/05-contrato-api.md`.
+Contrato completo (rutas, entradas, códigos y trazabilidad HU → endpoint): [`05-contrato-api.md`](../documentacion/docs/05-contrato-api.md).
 
 ## Decisiones declaradas
 

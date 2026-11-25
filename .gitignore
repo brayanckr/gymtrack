@@ -1,0 +1,6 @@
+# Cada módulo tiene además su propio .gitignore (backend/, frontend/, documentacion/)
+# Archivos temporales que Word crea mientras un documento está abierto
+~$*
+*.log
+.env
+.env.local

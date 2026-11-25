@@ -1,0 +1,902 @@
+{
+  "info": {
+    "name": "GymTrack API",
+    "description": "Colección del backend de GymTrack (docs/05-contrato-api.md). Ejecuta las carpetas en orden: los scripts guardan los ids en variables de colección. Requiere el backend en http://localhost:8080.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:8080/api"
+    },
+    {
+      "key": "miembroId",
+      "value": ""
+    },
+    {
+      "key": "entrenadorId",
+      "value": ""
+    },
+    {
+      "key": "ejercicioId",
+      "value": ""
+    },
+    {
+      "key": "objetivoId",
+      "value": ""
+    },
+    {
+      "key": "rutinaId",
+      "value": ""
+    },
+    {
+      "key": "sesionId",
+      "value": ""
+    }
+  ],
+  "item": [
+    {
+      "name": "0. Consultar datos del seed",
+      "item": [
+        {
+          "name": "Listar miembros (guarda el primero)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "if (pm.response.code === 201 || pm.response.code === 200) {",
+                  "  const json = pm.response.json();",
+                  "  const v = json[0] && json[0].id;",
+                  "  if (v) { pm.collectionVariables.set(\"miembroId\", v); }",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/miembros",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "miembros"
+              ]
+            },
+            "description": "Guarda el id del primer miembro en {{miembroId}}."
+          }
+        },
+        {
+          "name": "Listar entrenadores (guarda el primero)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "if (pm.response.code === 201 || pm.response.code === 200) {",
+                  "  const json = pm.response.json();",
+                  "  const v = json[0] && json[0].id;",
+                  "  if (v) { pm.collectionVariables.set(\"entrenadorId\", v); }",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/entrenadores",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "entrenadores"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Listar ejercicios (guarda el primero)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "if (pm.response.code === 201 || pm.response.code === 200) {",
+                  "  const json = pm.response.json();",
+                  "  const v = json[0] && json[0].id;",
+                  "  if (v) { pm.collectionVariables.set(\"ejercicioId\", v); }",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/ejercicios",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "ejercicios"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Filtrar ejercicios por grupo muscular",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/ejercicios?grupoMuscular=PECHO",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "ejercicios"
+              ],
+              "query": [
+                {
+                  "key": "grupoMuscular",
+                  "value": "PECHO"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Listar rutinas (guarda la primera)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "if (pm.response.code === 201 || pm.response.code === 200) {",
+                  "  const json = pm.response.json();",
+                  "  const v = json[0] && json[0].id;",
+                  "  if (v) { pm.collectionVariables.set(\"rutinaId\", v); }",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/rutinas",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "rutinas"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "1. Usuarios (HU-01, 02, 03)",
+      "item": [
+        {
+          "name": "Crear miembro",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "if (pm.response.code === 201 || pm.response.code === 200) {",
+                  "  const json = pm.response.json();",
+                  "  const v = json.id;",
+                  "  if (v) { pm.collectionVariables.set(\"miembroId\", v); }",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"identificacion\": \"1001\",\n  \"nombre\": \"Ana Pérez\",\n  \"correo\": \"ana@mail.com\",\n  \"fechaNacimiento\": \"2000-05-10\",\n  \"alturaCm\": 165\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/miembros",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "miembros"
+              ]
+            },
+            "description": "201. 409 si la identificación o el correo ya existen (cambia los valores para repetir)."
+          }
+        },
+        {
+          "name": "Crear entrenador",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "if (pm.response.code === 201 || pm.response.code === 200) {",
+                  "  const json = pm.response.json();",
+                  "  const v = json.id;",
+                  "  if (v) { pm.collectionVariables.set(\"entrenadorId\", v); }",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"identificacion\": \"2001\",\n  \"nombre\": \"Luis Gómez\",\n  \"correo\": \"luis@mail.com\",\n  \"especialidad\": \"Fuerza\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/entrenadores",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "entrenadores"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Consultar miembro",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/miembros/{{miembroId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "miembros",
+                "{{miembroId}}"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Consultar entrenador",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/entrenadores/{{entrenadorId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "entrenadores",
+                "{{entrenadorId}}"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Editar miembro",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nombre\": \"Ana P.\",\n  \"correo\": \"ana@mail.com\",\n  \"alturaCm\": 166\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/miembros/{{miembroId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "miembros",
+                "{{miembroId}}"
+              ]
+            },
+            "description": "La identificación no se edita."
+          }
+        }
+      ]
+    },
+    {
+      "name": "2. Catálogo de ejercicios (HU-07, 08)",
+      "item": [
+        {
+          "name": "Crear ejercicio (solo entrenador)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "if (pm.response.code === 201 || pm.response.code === 200) {",
+                  "  const json = pm.response.json();",
+                  "  const v = json.id;",
+                  "  if (v) { pm.collectionVariables.set(\"ejercicioId\", v); }",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"entrenadorId\": \"{{entrenadorId}}\",\n  \"nombre\": \"Press de banca\",\n  \"grupoMuscular\": \"PECHO\",\n  \"descripcion\": \"Con barra\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/ejercicios",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "ejercicios"
+              ]
+            },
+            "description": "201. 403 si entrenadorId es de un miembro. 409 si el nombre ya existe."
+          }
+        },
+        {
+          "name": "Consultar ejercicio",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/ejercicios/{{ejercicioId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "ejercicios",
+                "{{ejercicioId}}"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "3. Objetivos (HU-04, 05, 06)",
+      "item": [
+        {
+          "name": "Crear objetivo de peso",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "if (pm.response.code === 201 || pm.response.code === 200) {",
+                  "  const json = pm.response.json();",
+                  "  const v = json.id;",
+                  "  if (v) { pm.collectionVariables.set(\"objetivoId\", v); }",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"tipo\": \"PESO_CORPORAL\",\n  \"descripcion\": \"Bajar peso\",\n  \"valorInicial\": 80,\n  \"valorMeta\": 72,\n  \"fechaLimite\": \"2027-03-01\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/miembros/{{miembroId}}/objetivos",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "miembros",
+                "{{miembroId}}",
+                "objetivos"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Crear objetivo de fuerza",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"tipo\": \"FUERZA_EJERCICIO\",\n  \"descripcion\": \"Press de banca 80 kg\",\n  \"valorInicial\": 60,\n  \"valorMeta\": 80,\n  \"fechaLimite\": \"2027-03-01\",\n  \"ejercicioId\": \"{{ejercicioId}}\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/miembros/{{miembroId}}/objetivos",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "miembros",
+                "{{miembroId}}",
+                "objetivos"
+              ]
+            },
+            "description": "El tipo FUERZA_EJERCICIO exige ejercicioId."
+          }
+        },
+        {
+          "name": "Listar objetivos activos",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/miembros/{{miembroId}}/objetivos?estado=ACTIVO",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "miembros",
+                "{{miembroId}}",
+                "objetivos"
+              ],
+              "query": [
+                {
+                  "key": "estado",
+                  "value": "ACTIVO"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Consultar objetivo",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/objetivos/{{objetivoId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "objetivos",
+                "{{objetivoId}}"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Progreso del objetivo",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/objetivos/{{objetivoId}}/progreso",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "objetivos",
+                "{{objetivoId}}",
+                "progreso"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Cambiar estado a CUMPLIDO",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"estado\": \"CUMPLIDO\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/objetivos/{{objetivoId}}/estado",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "objetivos",
+                "{{objetivoId}}",
+                "estado"
+              ]
+            },
+            "description": "Valores: CUMPLIDO o CANCELADO. 409 si el objetivo ya está cerrado."
+          }
+        }
+      ]
+    },
+    {
+      "name": "4. Rutinas y asignaciones (HU-09 a 12)",
+      "item": [
+        {
+          "name": "Crear rutina (solo entrenador)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "if (pm.response.code === 201 || pm.response.code === 200) {",
+                  "  const json = pm.response.json();",
+                  "  const v = json.id;",
+                  "  if (v) { pm.collectionVariables.set(\"rutinaId\", v); }",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"entrenadorId\": \"{{entrenadorId}}\",\n  \"nombre\": \"Full body\",\n  \"descripcion\": \"Principiante\",\n  \"nivel\": \"PRINCIPIANTE\",\n  \"ejercicios\": [\n    {\n      \"ejercicioId\": \"{{ejercicioId}}\",\n      \"dia\": \"LUNES\",\n      \"series\": 3,\n      \"repeticiones\": 10,\n      \"descansoSegundos\": 90\n    }\n  ]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/rutinas",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "rutinas"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Consultar rutina",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/rutinas/{{rutinaId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "rutinas",
+                "{{rutinaId}}"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Asignar rutina al miembro",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"rutinaId\": \"{{rutinaId}}\",\n  \"entrenadorId\": \"{{entrenadorId}}\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/miembros/{{miembroId}}/asignaciones",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "miembros",
+                "{{miembroId}}",
+                "asignaciones"
+              ]
+            },
+            "description": "201. Finaliza la asignación activa previa."
+          }
+        },
+        {
+          "name": "Historial de asignaciones",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/miembros/{{miembroId}}/asignaciones",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "miembros",
+                "{{miembroId}}",
+                "asignaciones"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Rutina activa",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/miembros/{{miembroId}}/rutina-activa",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "miembros",
+                "{{miembroId}}",
+                "rutina-activa"
+              ]
+            },
+            "description": "404 si el miembro no tiene rutina activa."
+          }
+        }
+      ]
+    },
+    {
+      "name": "5. Sesiones de entrenamiento (HU-13, 14)",
+      "item": [
+        {
+          "name": "Registrar sesión",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "if (pm.response.code === 201 || pm.response.code === 200) {",
+                  "  const json = pm.response.json();",
+                  "  const v = json.id;",
+                  "  if (v) { pm.collectionVariables.set(\"sesionId\", v); }",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"fecha\": \"2026-11-24\",\n  \"duracionMinutos\": 60,\n  \"rutinaId\": \"{{rutinaId}}\",\n  \"notas\": \"Buena sesión\",\n  \"series\": [\n    {\n      \"ejercicioId\": \"{{ejercicioId}}\",\n      \"repeticiones\": 10,\n      \"pesoKg\": 60\n    },\n    {\n      \"ejercicioId\": \"{{ejercicioId}}\",\n      \"repeticiones\": 8,\n      \"pesoKg\": 65\n    }\n  ]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/miembros/{{miembroId}}/sesiones",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "miembros",
+                "{{miembroId}}",
+                "sesiones"
+              ]
+            },
+            "description": "Cambia la fecha si quieres otra sesión. rutinaId es opcional."
+          }
+        },
+        {
+          "name": "Listar sesiones (más reciente primero)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/miembros/{{miembroId}}/sesiones",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "miembros",
+                "{{miembroId}}",
+                "sesiones"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Consultar sesión",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/sesiones/{{sesionId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "sesiones",
+                "{{sesionId}}"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "6. Mediciones corporales (HU-15, 16)",
+      "item": [
+        {
+          "name": "Registrar medición",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"fecha\": \"2026-11-24\",\n  \"pesoKg\": 79.5,\n  \"porcentajeGrasa\": 18,\n  \"cinturaCm\": 84\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/miembros/{{miembroId}}/mediciones",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "miembros",
+                "{{miembroId}}",
+                "mediciones"
+              ]
+            },
+            "description": "409 si ya existe una medición de ese miembro en esa fecha: cambia la fecha."
+          }
+        },
+        {
+          "name": "Listar mediciones (cronológico)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/miembros/{{miembroId}}/mediciones",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "miembros",
+                "{{miembroId}}",
+                "mediciones"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "7. Panel de progreso (HU-17)",
+      "item": [
+        {
+          "name": "Panel del miembro",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/miembros/{{miembroId}}/panel",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "miembros",
+                "{{miembroId}}",
+                "panel"
+              ]
+            }
+          }
+        }
+      ]
+    }
+  ]
+}

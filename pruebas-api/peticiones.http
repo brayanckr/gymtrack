@@ -1,0 +1,204 @@
+### Peticiones de GymTrack para la extensión "REST Client" de VS Code.
+### Requisitos: MongoDB activo y backend en http://localhost:8080 (mvnw spring-boot:run).
+### Pulsa "Send Request" sobre cada petición y ejecútalas de arriba abajo: las de abajo usan los ids de las anteriores.
+
+@api = http://localhost:8080/api
+
+############ 0. Consultar datos ############
+
+### Listar miembros
+GET {{api}}/miembros
+
+### Listar entrenadores
+GET {{api}}/entrenadores
+
+### Listar ejercicios
+GET {{api}}/ejercicios
+
+### Filtrar ejercicios por grupo muscular
+GET {{api}}/ejercicios?grupoMuscular=PECHO
+
+### Listar rutinas
+GET {{api}}/rutinas
+
+############ 1. Usuarios (HU-01, 02, 03) ############
+
+### Crear miembro
+# @name crearMiembro
+POST {{api}}/miembros
+Content-Type: application/json
+
+{
+  "identificacion": "{{$randomInt 100000 999999}}",
+  "nombre": "Ana Pérez",
+  "correo": "ana{{$randomInt 1000 999999}}@mail.com",
+  "fechaNacimiento": "2000-05-10",
+  "alturaCm": 165
+}
+
+###
+@miembroId = {{crearMiembro.response.body.id}}
+
+### Crear entrenador
+# @name crearEntrenador
+POST {{api}}/entrenadores
+Content-Type: application/json
+
+{
+  "identificacion": "{{$randomInt 100000 999999}}",
+  "nombre": "Luis Gómez",
+  "correo": "luis{{$randomInt 1000 999999}}@mail.com",
+  "especialidad": "Fuerza"
+}
+
+###
+@entrenadorId = {{crearEntrenador.response.body.id}}
+
+### Consultar el miembro creado
+GET {{api}}/miembros/{{miembroId}}
+
+### Editar el miembro (la identificación no se edita)
+PUT {{api}}/miembros/{{miembroId}}
+Content-Type: application/json
+
+{
+  "nombre": "Ana P.",
+  "correo": "ana.editada{{$randomInt 1000 999999}}@mail.com",
+  "alturaCm": 166
+}
+
+############ 2. Catálogo de ejercicios (HU-07, 08) ############
+
+### Crear ejercicio (solo un entrenador; 403 si el id es de un miembro)
+# @name crearEjercicio
+POST {{api}}/ejercicios
+Content-Type: application/json
+
+{
+  "entrenadorId": "{{entrenadorId}}",
+  "nombre": "Press inclinado {{$randomInt 1 999999}}",
+  "grupoMuscular": "PECHO",
+  "descripcion": "Con mancuernas"
+}
+
+###
+@ejercicioId = {{crearEjercicio.response.body.id}}
+
+### Consultar ejercicio
+GET {{api}}/ejercicios/{{ejercicioId}}
+
+############ 3. Objetivos (HU-04, 05, 06) ############
+
+### Crear objetivo
+# @name crearObjetivo
+POST {{api}}/miembros/{{miembroId}}/objetivos
+Content-Type: application/json
+
+{
+  "tipo": "PESO_CORPORAL",
+  "descripcion": "Bajar peso",
+  "valorInicial": 80,
+  "valorMeta": 72,
+  "fechaLimite": "2027-03-01"
+}
+
+###
+@objetivoId = {{crearObjetivo.response.body.id}}
+
+### Listar objetivos activos
+GET {{api}}/miembros/{{miembroId}}/objetivos?estado=ACTIVO
+
+### Progreso del objetivo
+GET {{api}}/objetivos/{{objetivoId}}/progreso
+
+### Cerrar el objetivo (CUMPLIDO o CANCELADO; 409 si ya está cerrado)
+PATCH {{api}}/objetivos/{{objetivoId}}/estado
+Content-Type: application/json
+
+{ "estado": "CUMPLIDO" }
+
+############ 4. Rutinas y asignaciones (HU-09 a 12) ############
+
+### Crear rutina
+# @name crearRutina
+POST {{api}}/rutinas
+Content-Type: application/json
+
+{
+  "entrenadorId": "{{entrenadorId}}",
+  "nombre": "Full body",
+  "descripcion": "Principiante",
+  "nivel": "PRINCIPIANTE",
+  "ejercicios": [
+    { "ejercicioId": "{{ejercicioId}}", "dia": "LUNES", "series": 3, "repeticiones": 10, "descansoSegundos": 90 }
+  ]
+}
+
+###
+@rutinaId = {{crearRutina.response.body.id}}
+
+### Consultar rutina
+GET {{api}}/rutinas/{{rutinaId}}
+
+### Asignar la rutina al miembro (finaliza la activa anterior)
+POST {{api}}/miembros/{{miembroId}}/asignaciones
+Content-Type: application/json
+
+{
+  "rutinaId": "{{rutinaId}}",
+  "entrenadorId": "{{entrenadorId}}"
+}
+
+### Historial de asignaciones
+GET {{api}}/miembros/{{miembroId}}/asignaciones
+
+### Rutina activa
+GET {{api}}/miembros/{{miembroId}}/rutina-activa
+
+############ 5. Sesiones de entrenamiento (HU-13, 14) ############
+
+### Registrar sesión
+# @name crearSesion
+POST {{api}}/miembros/{{miembroId}}/sesiones
+Content-Type: application/json
+
+{
+  "fecha": "{{$localDatetime 'YYYY-MM-DD'}}",
+  "duracionMinutos": 60,
+  "rutinaId": "{{rutinaId}}",
+  "notas": "Buena sesión",
+  "series": [
+    { "ejercicioId": "{{ejercicioId}}", "repeticiones": 10, "pesoKg": 60 },
+    { "ejercicioId": "{{ejercicioId}}", "repeticiones": 8, "pesoKg": 65 }
+  ]
+}
+
+###
+@sesionId = {{crearSesion.response.body.id}}
+
+### Listar sesiones (más reciente primero)
+GET {{api}}/miembros/{{miembroId}}/sesiones
+
+### Consultar sesión
+GET {{api}}/sesiones/{{sesionId}}
+
+############ 6. Mediciones corporales (HU-15, 16) ############
+
+### Registrar medición (409 si ya hay una de ese miembro en la misma fecha)
+POST {{api}}/miembros/{{miembroId}}/mediciones
+Content-Type: application/json
+
+{
+  "fecha": "{{$localDatetime 'YYYY-MM-DD'}}",
+  "pesoKg": 79.5,
+  "porcentajeGrasa": 18,
+  "cinturaCm": 84
+}
+
+### Listar mediciones
+GET {{api}}/miembros/{{miembroId}}/mediciones
+
+############ 7. Panel de progreso (HU-17) ############
+
+### Panel del miembro
+GET {{api}}/miembros/{{miembroId}}/panel
