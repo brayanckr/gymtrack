@@ -1,0 +1,11 @@
+{
+  "name": "gymtrack-diagramas-editables",
+  "private": true,
+  "description": "Generadores de los diagramas .drawio de GymTrack (editables en Visual Paradigm Online)",
+  "scripts": {
+    "generar": "node generar-vistas.js && node generar-editables.js"
+  },
+  "dependencies": {
+    "elkjs": "0.12.1"
+  }
+}

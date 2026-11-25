@@ -1,0 +1,7 @@
+<plugin
+		id="com.gymtrack.vp.diagrams"
+		name="GymTrack - generador de vistas arquitectonicas"
+		description="Crea las vistas de contexto, funcional, logica, desarrollo y despliegue de GymTrack via Open API"
+		provider="GymTrack"
+		class="com.gymtrack.vp.GymTrackPlugin">
+</plugin>
